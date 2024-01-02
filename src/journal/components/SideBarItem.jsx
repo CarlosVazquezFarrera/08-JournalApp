@@ -12,11 +12,7 @@ import { setActiveNote } from "../../store/journal";
 export const SideBarItem = ({ note }) => {
   const dispatch = useDispatch();
   const onClick = () => {
-    const noteSelected = {
-        ...note,
-        imagesUrls: []
-    }
-    dispatch(setActiveNote(noteSelected))
+    dispatch(setActiveNote(note))
   };
   return (
     <ListItem disablePadding onClick={onClick}>

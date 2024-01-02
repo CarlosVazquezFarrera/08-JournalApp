@@ -18,15 +18,19 @@ import {
 } from "../../store/auth";
 import { useMemo } from "react";
 import { authStates } from "../../store/auth/authSatates";
+
+const loginForm = {
+  email: "",
+  password: "",
+};
+
+
 export const LoginPage = () => {
   const dispatch = useDispatch();
 
   const { status, errorMessage } = useSelector((state) => state.auth);
 
-  const { email, password, onInputChange } = useForm({
-    email: "",
-    password: "",
-  });
+  const { email, password, onInputChange } = useForm(loginForm);
 
   const handleLoging = (event) => {
     event.preventDefault();
