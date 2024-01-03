@@ -4,8 +4,8 @@ import {
   fireBaseLoadNotes,
   fireBaseSaveNote,
   firebaseCreateNote,
-  uploadFile,
 } from "../../firebase/journalProvider";
+import { uploadFile } from "../../journal/helpers/cloudinaryHelper";
 
 export const createNote = createAsyncThunk(
   "journal/createNote",
