@@ -1,8 +1,4 @@
-import { useMemo, useState } from "react";
-
-function capitalize(word) {
-  return `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
-}
+import { useState } from "react";
 
 export const useFormBuilder = (initialForm = {}) => {
   const form = {};

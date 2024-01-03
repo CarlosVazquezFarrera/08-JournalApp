@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNote, loadNotes, saveNote, uploadFiles } from "./thunks";
+import { createNote, deleteNote, loadNotes, saveNote, uploadFiles } from "./thunks";
 
 export const journalSlice = createSlice({
   name: "journal",
@@ -13,6 +13,12 @@ export const journalSlice = createSlice({
     setActiveNote: (state, action) => {
       state.active = action.payload;
       state.savedMessage = "";
+    },
+    clearNotes: (state) => {
+      state.isSaving = false;
+      state.savedMessage = "";
+      state.notes = [];
+      state.active = null;
     },
   },
   extraReducers: (builder) => {
@@ -37,16 +43,21 @@ export const journalSlice = createSlice({
       );
       state.savedMessage = `${action.payload.title} guardado con éxito`;
     });
-    builder.addCase(uploadFiles.pending, (state)=>{
+    builder.addCase(uploadFiles.pending, (state) => {
       state.isSaving = true;
     });
-    builder.addCase(uploadFiles.rejected, (state)=>{
+    builder.addCase(uploadFiles.rejected, (state) => {
       state.isSaving = false;
     });
-    builder.addCase(uploadFiles.fulfilled, (state, action)=>{
+    builder.addCase(uploadFiles.fulfilled, (state, action) => {
       state.isSaving = false;
-      state.active.imagesUrls = [...state.active.imagesUrls, ...action.payload]
+      state.active.imagesUrls = [...state.active.imagesUrls, ...action.payload];
     });
+
+    builder.addCase(deleteNote.fulfilled, (state, action)=>{
+      state.notes = state.notes.filter(note => note.id !== action.payload.id );
+      state.active = null
+    })
   },
 });
-export const { setActiveNote } = journalSlice.actions;
+export const { setActiveNote, clearNotes } = journalSlice.actions;

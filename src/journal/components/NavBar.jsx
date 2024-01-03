@@ -3,10 +3,12 @@ import { AppBar, Grid, IconButton, Toolbar, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { startLogOutFireBase } from "../../store/auth";
+import { clearNotes } from "../../store/journal";
 export const NavBar = ({ drawerWidth }) => {
   const distPatch = useDispatch();
   const onLogOut = () => {
     distPatch(startLogOutFireBase());
+    distPatch(clearNotes());
   };
 
   return (

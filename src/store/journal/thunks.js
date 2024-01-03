@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  fireBaseDeleteNote,
   fireBaseLoadNotes,
   fireBaseSaveNote,
   firebaseCreateNote,
@@ -42,5 +43,14 @@ export const uploadFiles = createAsyncThunk(
       fileUploadPromises.push(uploadFile(file));
     }
     return await Promise.all(fileUploadPromises);
+  }
+);
+
+export const deleteNote = createAsyncThunk(
+  "journal/deleteNote",
+  async (_, { getState }) => {
+    const { uid } = getState().auth;
+    const { active: note } = getState().journal;
+    return await fireBaseDeleteNote(uid, note)
   }
 );

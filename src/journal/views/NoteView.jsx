@@ -1,46 +1,30 @@
-import { useEffect, useMemo, useRef } from "react";
-import { SaveOutlined, UploadOutlined } from "@mui/icons-material";
+import { useEffect } from "react";
+import {
+  DeleteOutline,
+  SaveOutlined,
+  UploadOutlined,
+} from "@mui/icons-material";
 import { Button, Grid, IconButton, TextField, Typography } from "@mui/material";
 
-import { useDispatch, useSelector } from "react-redux";
-import { useFormik } from "formik";
-
 import { ImageGallery } from "../components";
-import { saveNote, uploadFiles } from "../../store/journal";
 
 import Swal from "sweetalert2";
+import { useNote } from "../hooks/noteHook";
 
 export const NoteView = () => {
-  const dispatch = useDispatch();
-
-  const onSaveNote = () => {
-    dispatch(saveNote());
-  };
   const {
-    active: note,
+    note,
     savedMessage,
     isSaving,
-  } = useSelector((state) => state.journal);
-
-  const { values, handleChange, handleSubmit } = useFormik({
-    initialValues: note,
-    enableReinitialize: true,
-    onSubmit: onSaveNote,
-  });
-
-  const { title, body, date } = values;
-
-  const dateString = useMemo(() => {
-    const noteDate = new Date(date);
-    return noteDate.toUTCString();
-  }, [date]);
-  const inputImages = useRef();
-  const onImagesChange = ({ target }) => {
-    const files = target.files;
-    if (files.length <= 0) return;
-    dispatch(uploadFiles(files));
-  };
-
+    dateString,
+    title,
+    body,
+    handleSubmit,
+    handleChange,
+    inputImages,
+    onDelete,
+    onImagesChange
+  } = useNote();
   useEffect(() => {
     if (savedMessage != "") {
       Swal.fire("Nota actualizada", savedMessage, "success");
@@ -114,6 +98,12 @@ export const NoteView = () => {
             onChange={handleChange}
             sx={{ border: "none", mb: 1 }}
           ></TextField>
+        </Grid>
+        <Grid container justifyContent="end">
+          <Button onClick={onDelete} color="error" sx={{ mt: 2 }}>
+            <DeleteOutline />
+            Borrar
+          </Button>
         </Grid>
         <ImageGallery images={note.imagesUrls} />
       </Grid>

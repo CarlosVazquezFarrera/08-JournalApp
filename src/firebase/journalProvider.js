@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, setDoc } from "firebase/firestore/lite";
+import { collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore/lite";
 import { FireBaseDB } from "./config";
 
 export const firebaseCreateNote = async (uid) => {
@@ -47,3 +47,9 @@ export const uploadFile = async (file) => {
   const cloudResp = await res.json();
   return cloudResp.secure_url;
 };
+
+export const fireBaseDeleteNote = async (uid, note)=>{
+  const docRef = doc(FireBaseDB, `${uid}/journal/notes/${note.id}`);
+  await deleteDoc(docRef);
+  return note;
+}
