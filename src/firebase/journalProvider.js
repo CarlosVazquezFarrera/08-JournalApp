@@ -9,8 +9,9 @@ export const firebaseCreateNote = async (uid) => {
   };
 
   const newDoc = doc(collection(FireBaseDB, `${uid}/journal/notes`));
-  const newData = await setDoc(newDoc, newNote);
-  return newData;
+  await setDoc(newDoc, newNote);
+  newNote.id = newDoc.id
+  return newNote;
 };
 
 export const fireBaseLoadNotes = async (uid) => {
@@ -26,6 +27,7 @@ export const fireBaseLoadNotes = async (uid) => {
 export const fireBaseSaveNote = async (uid, idNote, note) => {
   const docRef = doc(FireBaseDB, `${uid}/journal/notes/${idNote}`);
   await setDoc(docRef, note, { merge: true });
+  console.log(x)
   return { id: idNote, ...note };
 };
 
